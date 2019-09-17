@@ -1,4 +1,4 @@
-# Soccer_Classification_MachineLearning
+# TensorFlow-SoccerTeam-Classifier-ML
 
 A simple machine learning project using Tensor Flow that does two things:
 
