@@ -37,12 +37,26 @@ print(winRecords(pd.read_csv("epl_season-1819.csv"), 'EPL_18_19'))
 # Let's start with the training/learning/evaluating/testing Machine Learning Method! Beginning with Serie A 2018/19 dataset
 
 dataSerieA1819 = pd.read_csv("serieA_season-1819.csv")
+
+# Dropping the Div and Dates
+
 dataSerieA1819 = dataSerieA1819.drop('Div', axis=1)
 dataSerieA1819 = dataSerieA1819.drop('Date', axis=1)
 
-# Change the string for Full Time Result (FTR), AKA the outcome to 0s and 1s. 1 if the Home Team wins, 0 if the Away Team won or if a Draw was achieved
+# Dropping the Full Time Home Goals Scored, FTAG
+
+dataSerieA1819 = dataSerieA1819.drop('FTAG', axis=1)
+dataSerieA1819 = dataSerieA1819.drop('FTHG', axis=1)
+
+# Dropping the Half Time Home Goals Scored, HTAG, and the Half time result
+
+dataSerieA1819 = dataSerieA1819.drop('HTHG', axis=1)
+dataSerieA1819 = dataSerieA1819.drop('HTAG', axis=1)
+dataSerieA1819 = dataSerieA1819.drop('HTR', axis=1)
 
 dataSerieA1819['FTR'].unique()
+
+# Change the string for Full Time Result (FTR), AKA the outcome to 0s and 1s. 1 if the Home Team wins, 0 if the Away Team won or if a Draw was achieved
 
 def fix_outcome(outcome):
     if outcome == 'H':
@@ -63,15 +77,15 @@ X_train, X_test, y_train, y_test = train_test_split(x_data, y_labels, test_size=
 
 HomeTeam = tf.feature_column.categorical_column_with_hash_bucket('HomeTeam', hash_bucket_size=1000)
 AwayTeam = tf.feature_column.categorical_column_with_hash_bucket('AwayTeam', hash_bucket_size=1000)
-HTR  = tf.feature_column.sequence_categorical_column_with_hash_bucket('HTR', hash_bucket_size=1000)  # Half Time Result
+#HTR  = tf.feature_column.sequence_categorical_column_with_hash_bucket('HTR', hash_bucket_size=1000)  # Half Time Result
 
 # Create tf.feature_columns for Numerical/Continuous Values
 
-FTHG = tf.feature_column.numeric_column('FTHG') # Full Time Home Goals Scored
-FTAG = tf.feature_column.numeric_column('FTAG') # Full Time Away Goals Scored
+#FTHG = tf.feature_column.numeric_column('FTHG') # Full Time Home Goals Scored
+#FTAG = tf.feature_column.numeric_column('FTAG') # Full Time Away Goals Scored
 #FTR  = tf.feature_column.numeric_column('FTR')  # Full Time Result
-HTHG = tf.feature_column.numeric_column('HTHG') # Half Time Home Goals Scored
-HTAG = tf.feature_column.numeric_column('HTAG') # Half Time Away Goals Scored
+#HTHG = tf.feature_column.numeric_column('HTHG') # Half Time Home Goals Scored
+#HTAG = tf.feature_column.numeric_column('HTAG') # Half Time Away Goals Scored
 HS   = tf.feature_column.numeric_column('HS')   # Home Shots
 AS   = tf.feature_column.numeric_column('AS')   # Away Shots
 HST  = tf.feature_column.numeric_column('HST')  # Home Shots on Target
@@ -88,7 +102,8 @@ AR  = tf.feature_column.numeric_column('AR')    # Away Red Cards
 
 # Compile into one features column
 #feature_cols = [HomeTeam,AwayTeam,FTHG,FTAG,FTR,HTHG,HTAG,HTR,HS,AS,HST,AST,HF,AF,HC,AC,HY,AY,HR,AR]
-feature_cols = [HomeTeam,AwayTeam,FTHG,FTAG,HTHG,HTAG,HTR,HS,AS,HST,AST,HF,AF,HC,AC,HY,AY,HR,AR]
+#feature_cols = [HomeTeam,AwayTeam,FTHG,FTAG,HTHG,HTAG,HTR,HS,AS,HST,AST,HF,AF,HC,AC,HY,AY,HR,AR]
+feature_cols = [HomeTeam,AwayTeam,HS,AS,HST,AST,HF,AF,HC,AC,HY,AY,HR,AR]
 
 # Building an input function
 
