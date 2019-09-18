@@ -103,7 +103,7 @@ model.train(input_fn=input_fnc, steps=5000)
 # Now to make 'predictions'
 
 pred_fn = tf.estimator.inputs.pandas_input_fn(x=X_test, batch_size = len(X_test), shuffle=False)
-predictions = list(model.predict(input_fn=input_fnc))
+predictions = list(model.predict(input_fn=pred_fn))
 
 print(predictions[0])
 
